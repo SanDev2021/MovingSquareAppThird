@@ -18,28 +18,31 @@ extension UIColor {
 }
 
 class ViewController: UIViewController {
-    
+    //view and label outlets
     @IBOutlet weak var viewLbl: UILabel!
     @IBOutlet weak var viewBox: UIView!
-    var timer:Timer?
-    var isClockwise = true
+
+    //booleans for moving the block
+    var BlockisClockwise = true
     var goToTop = false
     var goToBottom = false
     var goToLeft = false
     var goToRight = true
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
+    //timer for block label
+    var timer:Timer?
     var counter = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         startTimer()
     }
-    
+    //block speed timer
     func startTimer() {
-        timer = Timer.scheduledTimer(timeInterval: 0.05,target: self,selector:#selector(moveView),userInfo: nil,repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.09,target: self,selector:#selector(moveView),userInfo: nil,repeats: true)
     }
-    //timer will never stops
+
     func stopTimer() {
         if timer != nil {
             timer?.invalidate()
@@ -51,51 +54,51 @@ class ViewController: UIViewController {
         var xPosition = viewBox.frame.origin.x
         var yPosition = viewBox.frame.origin.y
         
-        if isClockwise {
-            if xPosition > screenWidth - 55 {
+        if BlockisClockwise {
+            if xPosition > screenWidth - 70 {
                 resetBools()
                 goToBottom = true
             }
-            if yPosition > screenHeight - 55 {
+            if yPosition > screenHeight - 70 {
                 resetBools()
                 goToLeft = true
             }
-            if goToLeft && xPosition < 10 {
+            if goToLeft && xPosition < 20 {
                 resetBools()
                 goToTop = true
             }
-            if goToTop && yPosition < 50 {
+            if goToTop && yPosition < 20 {
                 resetBools()
                 goToBottom = true
-                isClockwise = false
+                BlockisClockwise = false
                 viewBox.backgroundColor = .random
                 counter += 1
                 viewLbl.text = "\(counter)"
             }
             //anticlockwise
         } else {
-            if goToBottom && yPosition > screenHeight - 55 {
+            if goToBottom && yPosition > screenHeight - 70 {
                 resetBools()
                 goToRight = true
             }
-            if goToRight && xPosition > screenWidth - 55 {
+            if goToRight && xPosition > screenWidth - 70 {
                 resetBools()
                 goToTop = true
             }
-            if goToTop && yPosition < 50 {
+            if goToTop && yPosition < 20 {
                 resetBools()
                 goToLeft = true
             }
-            if goToLeft && xPosition < 10 {
+            if goToLeft && xPosition < 20 {
                 resetBools()
                 goToRight = true
-                isClockwise = true
+                BlockisClockwise = true
                 viewBox.backgroundColor = .random
                 counter += 1
                 viewLbl.text = "\(counter)"
             }
         }
-        
+        //speed for blck
         if goToBottom {
             yPosition += 10
         } else if goToTop {
